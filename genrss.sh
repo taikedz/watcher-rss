@@ -78,7 +78,7 @@ if [[ $LASTSTAMP != $NEWSTAMP ]]; then
         # save the new identifier
         sed -i -r -e "s/$PAGEID:.+$/$PAGEID:$NEWSTAMP/" "$GENRSSRC/$DBFILE"
         cat <<EOFEED > "$DEFRSSDIR/$PAGENAME.xml"
-<?xml version="1.0! encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
 <channel>
 <title>Automated $PAGENAME RSS feed</title>
@@ -89,7 +89,7 @@ if [[ $LASTSTAMP != $NEWSTAMP ]]; then
 <title>$PAGENAME retrieved $CURDATE</title>
 <description>$PAGEDESCRIPTION</description>
 <link>$GENLINK</link>
-<pubdate>$CURDATE</pudate>
+<pubdate>$CURDATE</pubdate>
 </item>
 
 </channel>
