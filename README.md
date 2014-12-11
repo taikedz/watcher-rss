@@ -44,11 +44,11 @@ My crontab is set to `7 0 * * * /home/me/bin/genrss.sh sinfest` to check every m
 
 The profile file content is
 
-  PAGEURL=http://sinfest.net
-  PAGENAME=Sinfest!
-  
-  function findstamp() {
-      cat /tmp/genrss-tempfile | grep -E "<img src=\"btphp/comics/.+?.gif\" alt=\".+?\">" | sed -r -e "s/^.+alt=\"(.+?)\">.+\$/\1/"
-  }
+	PAGEURL=http://sinfest.net
+	PAGENAME=Sinfest!
+	
+	function findstamp() {
+	   cat /tmp/genrss-tempfile | grep -E "<img src=\"btphp/comics/.+?.gif\" alt=\".+?\">" | sed -r -e "s/^.+alt=\"(.+?)\">.+\$/\1/"
+	}
 
 The PAGEURL and PAGENAME are set here. PAGENAME will also be the name of the feed path (for example, http://example.com/rss/Sinfest!.xml)
