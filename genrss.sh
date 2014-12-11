@@ -103,3 +103,6 @@ fi
 if [[ "x$LASTSTAMP" = "x" ]]; then
         echo "$PAGEID:$NEWSTAMP" > "$GENRSSRC/$DBFILE"
 fi
+
+# cleanup temp
+rm /tmp/genrss-tempfile
