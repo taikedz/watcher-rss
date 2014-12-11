@@ -31,7 +31,7 @@
 
 GENRSSRC="$HOME/.genrss"
 DBFILE=rss-db
-DEFRSSDIR="$GENRSSRC/feeds"
+DEFRSSDIR="./"
 
 function trymkdir() {
         mkdir -p $1
@@ -45,6 +45,13 @@ if [[ ! -d $GENRSSRC ]]; then
         trymkdir $GENRSSRC
         trymkdir $DEFRSSDIR
         touch "$GENRSSRC/$DBFILE"
+fi
+
+if [[ "x$1" = "x" ]]; then
+	exit
+elif [[ ! -f "$GENRSSRC/$1" ]]; then
+	echo "$1" is not a valid configuration.
+	exit 1
 fi
 
 # these functions can be overidden in definition file
@@ -80,7 +87,7 @@ getpage "$PAGEURL" $TMPFILE
 CURDATE=$(date)
 LASTSTAMP=$(cat "$GENRSSRC/$DBFILE" | grep "$PAGEID:" | sed -r -e "s/$PAGEID:(.+)\$/\1/")
 
-NEWSTAMP=$(findstamp | head -n 1) # ensure it sits only on one line
+NEWSTAMP=$(findstamp $TMPFILE | head -n 1) # ensure it sits only on one line
 GENLINK=$(getpermalink)
 PAGEDESCRIPTION=$(getdescription)
 
