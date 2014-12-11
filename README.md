@@ -52,7 +52,7 @@ The profile file content is
 	   cat $1 | grep -E "<img src=\"btphp/comics/.+?.gif\" alt=\".+?\">" | sed -r -e "s/^.+alt=\"(.+?)\">.+\$/\1/"
 	}
 
-The PAGEURL and PAGENAME are set here. PAGENAME will also be the name of the feed path (for example, http://ducakedhare.com/rss/Sinfest_.xml)
+The PAGEURL and PAGENAME are set here. PAGENAME will also be the name of the feed path (for example, http://ducakedhare.co.uk/rss/Sinfest_.xml)
 
 TODO
 ===
