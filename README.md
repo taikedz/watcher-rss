@@ -36,6 +36,8 @@ Setup
 Profile file
 ===
 
+run `./defrss feedName` to create a new feed file in ~/.genrss/ and pre-populate it with a basic handler.
+
 Here's an example for Sinfest, a webcomic I follow but that has no RSS.
 
 I have this file saved as `~/.genrss/sinfest`
