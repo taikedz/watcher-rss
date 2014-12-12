@@ -120,7 +120,7 @@ fi
 
 # first time we've parsed this page/profile
 if [[ "x$LASTSTAMP" = "x" ]]; then
-        echo "$PAGEID:$NEWSTAMP" > "$GENRSSRC/$DBFILE"
+        echo "$PAGEID:$NEWSTAMP" >> "$GENRSSRC/$DBFILE"
 fi
 
 # cleanup temp
