@@ -31,7 +31,7 @@
 
 GENRSSRC="$HOME/.genrss"
 DBFILE=rss-db
-DEFRSSDIR="./"
+DEFRSSDIR="/var/www/rss"
 
 function trymkdir() {
         mkdir -p $1
