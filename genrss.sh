@@ -102,12 +102,14 @@ if [[ $LASTSTAMP != $NEWSTAMP ]]; then
 <title>Automated $PAGENAME RSS feed</title>
 <description>This is an automated feed for $PAGENAME hosted at $PAGEURL.<br />Depending on the server configuration, this feed may not be up to date.</description>
 <link>https://github.com/taikedz/</link>
+<lastBuildDate>$CURDATE</lastBuildDate>
 
 <item>
 <title>$PAGENAME retrieved $CURDATE</title>
 <description>$PAGEDESCRIPTION</description>
 <link>$GENLINK</link>
 <pubdate>$CURDATE</pubdate>
+<guid>$NEWSTAMP $CURDATE</guid>
 </item>
 
 </channel>

@@ -40,7 +40,7 @@ Here's an example for Sinfest, a webcomic I follow but that has no RSS.
 
 I have this file saved as `~/.genrss/sinfest`
 
-My crontab is set to `7 0 * * * /home/me/bin/genrss.sh sinfest` to check every morning at 7:00 for a new comic.
+My crontab is set to `0 6 * * * /home/me/bin/genrss.sh sinfest` to check every morning at 06:00 for a new comic.
 
 The profile file content is
 
@@ -52,7 +52,7 @@ The profile file content is
 	   cat $1 | grep -E "<img src=\"btphp/comics/.+?.gif\" alt=\".+?\">" | sed -r -e "s/^.+alt=\"(.+?)\">.+\$/\1/"
 	}
 
-The PAGEURL and PAGENAME are set here. PAGENAME will also be the name of the feed path (for example, http://ducakedhare.com/rss/Sinfest_.xml)
+The PAGEURL and PAGENAME are set here. PAGENAME will also be the name of the feed path (for example, http://ducakedhare.co.uk/rss/Sinfest_.xml)
 
 TODO
 ===
