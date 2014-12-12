@@ -59,7 +59,7 @@ function getpermalink() {
 echo "$PAGEURL"
 }
 function getdescription() {
-echo "<a href=\"$PAGEURL\">$PAGENAME</a>"
+echo "<a href=\"$PAGEURL\">$PAGENAME / $NEWSTAMP</a>"
 }
 
 function getpage() {
@@ -85,15 +85,16 @@ TMPFILE=$(mktemp)
 getpage "$PAGEURL" $TMPFILE
 
 CURDATE=$(date)
-LASTSTAMP=$(cat "$GENRSSRC/$DBFILE" | grep "$PAGEID:" | sed -r -e "s/$PAGEID:(.+)\$/\1/")
+LASTSTAMP=$(cat "$GENRSSRC/$DBFILE" | grep "$PAGEID:" | sed -r -e "s/$PAGEID:(.+)/\1/")
 
 NEWSTAMP=$(findstamp $TMPFILE | head -n 1) # ensure it sits only on one line
 GENLINK=$(getpermalink)
 PAGEDESCRIPTION=$(getdescription)
 
+
 if [[ $LASTSTAMP != $NEWSTAMP ]]; then
         # save the new identifier
-        sed -i -r -e "s/$PAGEID:.+$/$PAGEID:$NEWSTAMP/" "$GENRSSRC/$DBFILE"
+        sed -i -r -e "s/$PAGEID\:.+\$/$PAGEID:$NEWSTAMP/" "$GENRSSRC/$DBFILE"
 	RSSNAME=$(echo $PAGENAME | sed -r -e s/[^a-zA-Z0-9]+/_/)
         cat <<EOFEED > "$DEFRSSDIR/$RSSNAME.xml"
 <?xml version="1.0" encoding="UTF-8" ?>
