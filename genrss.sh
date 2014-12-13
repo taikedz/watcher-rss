@@ -44,13 +44,15 @@ function getpage() {
 
 touch "$RSS_STAMPS"
 if [[ $? != 0 ]]; then
-	echo Failed to access stamps database $RSS_STAMPS
+	echo "Failed to access stamps database $RSS_STAMPS"
+	exit 1
 fi
 
 # Check existence of handler script
 HANDLER=$1
 if [[ ! -f "$HANDLER" ]]; then
-	echo Could not find handler script "$1"
+	echo "Could not find handler script $HANDLER"
+	exit 2
 fi
 
 
