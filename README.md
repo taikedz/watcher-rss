@@ -7,7 +7,7 @@ When you're trying to follow a site's updates, you generally hope that it would 
 
 Or maybe you're trying to follow a site that does not provide an RSS for the specific page/subsection you want to follow.
 
-Or maybe you want to be alerted to changes in a page when the page itself changes - but in your RSS reader?
+Or maybe you want to be alerted to changes in SOMETHING, SOMEWHERE - directly in your RSS reader?
 
 watcher-rss is a simple bash script designed for that.
 
@@ -16,9 +16,9 @@ Deploy it to your server and call it through your crontab. When its cron job com
 Requirements
 ===
 
-* Web server - to publish the RSS file
+* Somewhere to publish the RSS as an XML file where the RSS consumer can get it
 * cron (or equivalent mechanism) to call the script
-* Server with bash and general POSIX utils. Originally written on Linux. May work on OS X. May work on Windows with cygwin. Not tested.
+* bash, wget; GNU cat, sed, grep
 
 Setup
 ---
@@ -27,38 +27,42 @@ Setup
 2. Edit genrss.sh and change the path DEFRSSDIR - point this to where you want the feeds to be published
     * for example, DEFRSSDIR=/var/www/html/rss
     * The RSS could then be at http://example.com/rss/example.xml
-2. Run it once to create the necessary directories
-3. Create handler profile (see below) and save it to ~/.genrss/exampleName
-4. edit your crontab with `crontab -e`
-5. Adjust the cron frequency and make the job call the genrss.sh script with examplename `/home/user/bin/genrss.sh exampleName`
-6. Save the new crontab
+2. Create handler script (see below) and save it
+3. edit your crontab with `crontab -e`
+4. Adjust the cron frequency and make the job call the genrss.sh script with examplename `/home/user/bin/genrss.sh exampleName`
+5. Save the new crontab
 
-Profile file
+Handler script
 ===
 
-run `./defrss feedName` to create a new feed file in ~/.genrss/ and pre-populate it with a basic handler.
+run `./defrss feedName` to create a new feed file and pre-populate it with some demo handler logic and the required variables.
 
-Here's an example for Sinfest, a webcomic I follow but that has no RSS.
+Here's an example for the FOSDEM event, to monitor its changes - I specifically track its title for changes in the number of events. You could conceivably make your script generate a unique identifier for any change you wanted the script to monitor...
 
-I have this file saved as `~/.genrss/sinfest`
+I have my handler file saved as `~/rss/fosdem`
 
-My crontab is set to `0 6 * * * /home/me/bin/genrss.sh sinfest` to check every morning at 06:00 for a new comic.
+My crontab is set to `0 * * * * /home/me/bin/genrss.sh /home/me/rss/fosdem` to check every hour for updates.
 
 The profile file content is
 
-	PAGEURL=http://sinfest.net
-	PAGENAME=Sinfest!
+	#! /bin/bash
 	
-	# this function receives as argument the page specified
+	# The following definitions are mandatory
+	RSS_PAGEURL=https://fosdem.org/2015/schedule/events/
+	RSS_PAGENAME="FOSDEM Events"
+	RSS_PAGEID=fosdem
+	
+	# Process the page
+	# Note - the main script includes the  function to help you download pages easily
 	function findstamp() {
-	   cat $1 | grep -E "<img src=\"btphp/comics/.+?.gif\" alt=\".+?\">" | sed -r -e "s/^.+alt=\"(.+?)\">.+\$/\1/"
+	        NEWSTAMP=$(getpage "$RSS_PAGEURL" "-" | grep "identifying string" | sed -r -e "s/.+(isolate this).+/\1/")
+	#RSS_PERMALINK=define permalink (optional)
+	RSS_DESCRIPTION="Now listing $NEWSTAMP"
 	}
 
-The PAGEURL and PAGENAME are set here. PAGENAME will also be the name of the feed path (for example, http://ducakedhare.co.uk/rss/Sinfest_.xml)
+The RSS\_PAGEURL and RSS\_PAGENAME are set here. RSS\_PAGENAME will also be the name of the feed path (for example, http://ducakedhare.co.uk/rss/FOSDEM_Events.xml)
 
 TODO
 ===
 
-Move page download logic to profile script?
-
-Demonstrate use of custom tools/external scripts in profile script
+Demonstrate use of custom tools/external scripts in handler script
