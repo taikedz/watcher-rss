@@ -66,7 +66,7 @@ RSS\_PAGEID determines the id of the RSS feed. It should only have letters and n
 
 The findstamp() function must return a string identifying the state of the content - for example the permalink to the content, or something uniquely identifying its state. If this changes between calls, then the watched entity is deemed to have changed and a new RSS entry is created. Conversely, if two calls to findstamp() return the same value, it is deemed that no change has ocurred between the two.
 
-The main genrss.sh uses the value from findstamp() to register the last state of the feed.
+The main genrss.sh uses the value of $NEWSTAMP as set by findstamp() to register the last state of the feed.
 
 More than just page watching
 ===
