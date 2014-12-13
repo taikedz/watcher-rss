@@ -60,7 +60,9 @@ The profile file content is
 	RSS_DESCRIPTION="Now listing $NEWSTAMP"
 	}
 
-The RSS\_PAGEURL and RSS\_PAGENAME are set here. RSS\_PAGENAME will also be the name of the feed path (for example, http://ducakedhare.co.uk/rss/FOSDEM_Events.xml)
+The RSS\_PAGEURL and RSS\_PAGENAME are set here. RSS\_PAGENAME will also be the name of the feed path (for example, http://ducakedhare.co.uk/rss/FOSDEM\_Events.xml).
+
+RSS\_PAGEID determines the id of the RSS feed. It should only have letters and numbers in it, no spaces or other characters.
 
 TODO
 ===
