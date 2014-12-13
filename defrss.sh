@@ -1,36 +1,36 @@
 #! /bin/bash
 
-if [[ "x$EDITOR" = "x" ]]; then
-	echo "\$EDITOR is not set"
-	exit 1
-fi
+function abortnow() { echo "$@"; exit 1; }
+
+[[ "$EDITOR" ]] || abortnow "\$EDITOR is not set"
 
 
 FEEDNAME=$(echo $1 | sed -r -e "s/([^a-zA-Z0-9_\.-]+)/_/")
 
-if [[ "x$FEEDNAME" = "x" ]]; then
-	echo Specify a feed name
-	exit 2
-fi
+[[ "$FEEDNAME" ]] || abortnow "Specify a feed name"
 
-FEEDFILE=$HOME/.genrss/$FEEDNAME
+if [[ ! -f "$FEEDNAME" ]]; then
 
-if [[ ! -f $FEEDFILE ]]; then
+echo Editing $FEEDNAME;
 
-cat <<EODEMO > $FEEDFILE
+cat <<EODEMO > $FEEDNAME
 #! /bin/bash
 
 # The following definitions are mandatory
-PAGEURL=http://www.example.com
-PAGENAME=Example feed definition
+RSS_PAGEURL=http://www.example.com
+RSS_PAGENAME=Example feed definition
+RSS_PAGEID=$(echo $FEEDNAME | sed -r -e "s/([^a-zA-Z0-9_\.-]+)//")
 
 # Process the page
+# Note - the main script includes the `getpage` function to help you download pages easily
 function findstamp() {
-	cat \$1 | grep "identifying string" | sed -r -e "s/.+(isolate this).+/\1/"
+	NEWSTAMP=\$(getpage "\$RSS_PAGEURL" "-" | grep "identifying string" | sed -r -e "s/.+(isolate this).+/\1/")
+	#RSS_PERMALINK=define permalink (optional)
+	#RSS_DESCRIPTION=define custom description (optional)
 }
 
 EODEMO
 
 fi
 
-$EDITOR $FEEDFILE
+$EDITOR $FEEDNAME
