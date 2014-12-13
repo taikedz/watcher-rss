@@ -27,7 +27,15 @@ function findstamp() {
 	NEWSTAMP=\$(getpage "\$RSS_PAGEURL" "-" | grep -E "identifying string" | sed -r -e "s/.+(isolate this).+/\1/")
 	#RSS_PERMALINK=define permalink (optional)
 	RSS_DESCRIPTION=New change: $NEWSTAMP
-	NEWSTAMP=$(echo $NEWSTAMP | md5hash)
+	if [[ $NEWSTAMP ]]; then
+		NEWSTAMP=$(echo $NEWSTAMP | md5hash)
+	else
+		# constant stamp - report only once
+		NEWSTAMP=FAILED
+		# report every failed run
+		#NEWSTAMP=FAILED $CURDATE
+		RSS_DESCRIPTION="CONTENT DOWNLOAD FAIL"
+	fi
 }
 
 EODEMO
