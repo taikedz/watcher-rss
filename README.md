@@ -55,7 +55,7 @@ The handler script content is
 	# Process the page
 	# Note - the main script includes the getpage function to help you download pages easily
 	function findstamp() {
-	        NEWSTAMP=$(getpage "$RSS_PAGEURL" "-" grep -E "<h1>[0-9]+\\s+Events</h1>" | sed -r -e "s/<h1>.+([0-9]+.+?)<\\h1>/\1/")
+	        NEWSTAMP=$(getpage "$RSS_PAGEURL" "-" | grep -E "<h1>[0-9]+\\s+Events</h1>" | sed -r -e "s/<h1>.+([0-9]+.+?)<\\h1>/\1/")
 		#RSS_PERMALINK=define permalink (optional)
 		RSS_DESCRIPTION="Now listing $NEWSTAMP"
 	}
