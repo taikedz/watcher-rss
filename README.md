@@ -1,7 +1,7 @@
 watcher-rss
 ===========
 
-Watch a site and generate an RSS entry on change
+Call a script watching for changes, and generate an RSS entry on change
 
 When you're trying to follow a site's updates, you generally hope that it would have an RSS feed. Sometimes it doesn't.
 
@@ -63,6 +63,10 @@ The profile file content is
 The RSS\_PAGEURL and RSS\_PAGENAME are set here. RSS\_PAGENAME will also be the name of the feed path (for example, http://ducakedhare.co.uk/rss/FOSDEM\_Events.xml).
 
 RSS\_PAGEID determines the id of the RSS feed. It should only have letters and numbers in it, no spaces or other characters.
+
+The findstamp() function must return a string identifying the state of the content - for example the permalink to the content, or something uniquely identifying its state. If this changes between calls, then the watched entity is deemed to have changed and a new RSS entry is created. Conversely, if two calls to findstamp() return the same value, it is deemed that now change has ocurred between the two.
+
+The main genrss.sh uses the value from findstamp() to register the last state of the feed.
 
 TODO
 ===
