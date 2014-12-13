@@ -77,8 +77,8 @@ CURDATE=$(date)
 LASTSTAMP=$(cat "$RSS_STAMPS" | grep "$RSS_PAGEID:" | sed -r -e "s/$RSS_PAGEID:(.+)/\1/")
 
 findstamp
-NEWSTAMP=$(echo $NEWSTAMP | head -n 1) # ensure it sits only on one line
 if [[ $? != 0 ]]; then rssabort "Handler did not define findstamp()"; fi
+NEWSTAMP=$(echo $NEWSTAMP | head -n 1) # ensure it sits only on one line
 
 # If these are not defined after the call to `findstamp` then define them.
 [[ "$RSS_PERMALINK" ]] || RSS_PERMALINK="$RSS_PAGEURL"
