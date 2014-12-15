@@ -43,7 +43,7 @@ I have my handler file saved as `~/rss/fosdem`
 
 My crontab is set to `0 * * * * /home/me/bin/genrss.sh /home/me/rss/fosdem` to check every hour for updates.
 
-The profile file content is
+The handler script content is
 
 	#! /bin/bash
 	
@@ -53,22 +53,40 @@ The profile file content is
 	RSS_PAGEID=fosdem
 	
 	# Process the page
-	# Note - the main script includes the  function to help you download pages easily
+	# Note - the main script includes the getpage function to help you download pages easily
 	function findstamp() {
-	        NEWSTAMP=$(getpage "$RSS_PAGEURL" "-" | grep "identifying string" | sed -r -e "s/.+(isolate this).+/\1/")
-	#RSS_PERMALINK=define permalink (optional)
-	RSS_DESCRIPTION="Now listing $NEWSTAMP"
+	        NEWSTAMP=$(getpage "$RSS_PAGEURL" "-" | grep -E "<h1>[0-9]+\\s+Events</h1>" | sed -r -e "s/<h1>.+([0-9]+.+?)<\\h1>/\1/")
+		#RSS_PERMALINK=define permalink (optional)
+		RSS_DESCRIPTION="Now listing $NEWSTAMP"
 	}
 
-The RSS\_PAGEURL and RSS\_PAGENAME are set here. RSS\_PAGENAME will also be the name of the feed path (for example, http://ducakedhare.co.uk/rss/FOSDEM\_Events.xml).
+The RSS\_PAGEURL and RSS\_PAGENAME are set here. RSS\_PAGENAME will also be the name of the feed path (for example, <http://ducakedhare.co.uk/rss/FOSDEM_Events.xml>).
 
 RSS\_PAGEID determines the id of the RSS feed. It should only have letters and numbers in it, no spaces or other characters.
 
-The findstamp() function must return a string identifying the state of the content - for example the permalink to the content, or something uniquely identifying its state. If this changes between calls, then the watched entity is deemed to have changed and a new RSS entry is created. Conversely, if two calls to findstamp() return the same value, it is deemed that now change has ocurred between the two.
+The findstamp() function must return a string identifying the state of the content - for example the permalink to the content, or something uniquely identifying its state. If this changes between calls, then the watched entity is deemed to have changed and a new RSS entry is created. Conversely, if two calls to findstamp() return the same value, it is deemed that no change has ocurred between the two.
 
-The main genrss.sh uses the value from findstamp() to register the last state of the feed.
+The main genrss.sh uses the value of $NEWSTAMP as set by findstamp() to register the last state of the feed.
 
-TODO
+More than just page watching
 ===
 
-Demonstrate use of custom tools/external scripts in handler script
+Your script could even be conceivably:
+
+	#! /bin/bash
+	
+	RSS_PAGEURL=mailto:security-team@copmany.com
+	RSS_PAGENAME="Server reports"
+	RSS_PAGEID=reports
+	
+	function findstamp() {
+		local pulledlogs
+		pulledlogs=$(tail /var/log/security)
+	        NEWSTAMP=$(echo $pulledlogs | md5hash)
+		RSS_PERMALINK=mailto:security-team@company.com?subject=Security+logs+changed
+		RSS_DESCRIPTION="<pre>$pulledlogs</pre>"
+	}
+
+This would create a new entry in your RSS feed any time the end contents of `/var/log/security` changed. The link would then open an email for you to shoot off a rapid message...
+
+Watch anything!
