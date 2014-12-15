@@ -78,7 +78,7 @@ LASTSTAMP=$(cat "$RSS_STAMPS" | grep "$RSS_PAGEID:" | sed -r -e "s/$RSS_PAGEID:(
 
 findstamp
 if [[ $? != 0 ]]; then rssabort "Handler did not define findstamp()"; fi
-NEWSTAMP=$(echo $NEWSTAMP | head -n 1) # ensure it sits only on one line
+NEWSTAMP=$(echo "$NEWSTAMP" | head -n 1) # ensure it sits only on one line
 
 # If these are not defined after the call to `findstamp` then define them.
 [[ "$RSS_PERMALINK" ]] || RSS_PERMALINK="$RSS_PAGEURL"
@@ -86,7 +86,8 @@ NEWSTAMP=$(echo $NEWSTAMP | head -n 1) # ensure it sits only on one line
 
 if [[ $LASTSTAMP != $NEWSTAMP ]]; then
         # save the new identifier
-        sed -i -r -e "s/$RSS_PAGEID\:.+\$/$RSS_PAGEID:$NEWSTAMP/" "$RSS_STAMPS"
+	#echo "s/$RSS_PAGEID\:.+\$/$RSS_PAGEID\:$NEWSTAMP/"
+	sed -i -r -e "s/$RSS_PAGEID\:.+\$/$RSS_PAGEID\:$NEWSTAMP/" "$RSS_STAMPS"
 	RSSNAME=$(echo "$RSS_PAGENAME" | sed -r -e s/[^a-zA-Z0-9]+/_/)
         cat <<EOFEED > "$RSS_DIR/$RSSNAME.xml"
 <?xml version="1.0" encoding="UTF-8" ?>
